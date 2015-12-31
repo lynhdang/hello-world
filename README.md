@@ -4,4 +4,4 @@ Test.
 
 Edited from eclipse and commit.
 
-Edited and commited from web browser.
+Edited and committed from web browser.
