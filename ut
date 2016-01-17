@@ -22,6 +22,7 @@ describe('Test "Line item shared reference"', function() {
             });
 
             describe('shared > 0', function() { //TODO: text
+              var settingslink;
               beforeEach(function() {
                 var sharedCompanies = [
                   {
@@ -39,6 +40,7 @@ describe('Test "Line item shared reference"', function() {
 
                 // get the shared reference
                 sharedReferenceComponent = TestUtils.findRenderedComponentWithType(component, SHARED_COMPONENT_NAME);
+                settingslink = TestUtils.findRenderedComponentWithType(sharedReferenceComponent, Link);
               });
 
               it('should see the Shared reference', function() {
@@ -46,13 +48,11 @@ describe('Test "Line item shared reference"', function() {
               });
 
               it('Shared reference should be "Shares (2)"', function() {
-                
+                expect(settingslink.props.children).toEqual("Shares (2)"); //TODO: text
               });
 
               it('Shared reference should a link to the share settings page', function() {
-                var settingslink = TestUtils.findRenderedComponentWithType(sharedReferenceComponent, Link);
-
-                expect(settingslink.props.to).toEqual("");
+                expect(settingslink.props.to).toEqual(""); //TODO
               });
 
             });
@@ -72,12 +72,16 @@ describe('Test "Line item shared reference"', function() {
               });
 
               it('Shared reference should be "Not Shared"', function() {
-                
+                var sharedText = TestUtils.scryRenderedDOMComponentsWithTag(sharedReferenceComponent, 'span')[0];
+
+                expect(React.findDOMNode(sharedText).textContent).toBe("Not Shared"); //TODO: text
               });
 
               it('Shared reference should not a link', function() {
                 var settingslink = TestUtils.findRenderedComponentWithType(sharedReferenceComponent, Link);
                 expect(settingslink).not.toBeDefined();
+                var linkElement = TestUtils.scryRenderedDOMComponentsWithTag(sharedReferenceComponent, 'a')[0];
+                expect(linkElement).not.toBeDefined();
               });
             });            
           });
