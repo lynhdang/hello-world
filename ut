@@ -1,0 +1,106 @@
+describe('Test "Line item shared reference"', function() {
+          var SHARED_COMPONENT_NAME = ""; //TODO: text
+          var ownedCompany = {
+            id: 'ownedCompanyId'
+          };
+          var sharedReferenceComponent;
+
+          describe('When login user is employed for the owned company', function() {
+            beforeEach(function() {
+              User.parentCompany = {
+                id: ownedCompany.id
+              };
+
+              var ownedCompanyRelationship = {
+                resourceId: creator.identityID,
+                resourceType: RESOURCE_TYPE.USERS,
+                withEntity: RELATIONSHIP_TYPE.WITH_COMPANY,
+                responseData: ownedCompany
+              };
+              dispatchLib.resources.fetchRelationshipForResource(component.props.flux, ownedCompanyRelationship);
+
+            });
+
+            describe('shared > 0', function() { //TODO: text
+              beforeEach(function() {
+                var sharedCompanies = [
+                  {
+                    id: 'company_id_1',
+                    name: 'company 1'
+                  },
+                  {
+                    id: 'company_id_2',
+                    name: 'company 1'
+                  }
+                ];
+
+                // dispatch all companies that were shared to line item
+                dispatchLib.companies.fetchCompaniesSharedToLineItem(component.props.flux, lineItemId, sharedCompanies);
+
+                // get the shared reference
+                sharedReferenceComponent = TestUtils.findRenderedComponentWithType(component, SHARED_COMPONENT_NAME);
+              });
+
+              it('should see the Shared reference', function() {
+                expect(sharedReferenceComponent).toBeDefined();
+              });
+
+              it('Shared reference should be "Shares (2)"', function() {
+                
+              });
+
+              it('Shared reference should a link to the share settings page', function() {
+                var settingslink = TestUtils.findRenderedComponentWithType(sharedReferenceComponent, Link);
+
+                expect(settingslink.props.to).toEqual("");
+              });
+
+            });
+
+            describe('shared = 0', function() { //TODO: text
+              beforeEach(function() {
+                var sharedCompanies = [];
+
+                // dispatch all companies that were shared to line item
+                dispatchLib.companies.fetchCompaniesSharedToLineItem(component.props.flux, lineItemId, sharedCompanies);
+
+                sharedReferenceComponent = TestUtils.findRenderedComponentWithType(component, SHARED_COMPONENT_NAME);
+              });
+
+              it('should see the Shared reference', function() {
+                expect(sharedReferenceComponent).toBeDefined();
+              });
+
+              it('Shared reference should be "Not Shared"', function() {
+                
+              });
+
+              it('Shared reference should not a link', function() {
+                var settingslink = TestUtils.findRenderedComponentWithType(sharedReferenceComponent, Link);
+                expect(settingslink).not.toBeDefined();
+              });
+            });            
+          });
+
+          describe('When login user isn\'t employed for the owned company', function() {
+            beforeEach(function() {
+              User.parentCompany = {
+                id: 'nonOwnedCompanyId'
+              };
+
+              var ownedCompanyRelationship = {
+                resourceId: creator.identityID,
+                resourceType: RESOURCE_TYPE.USERS,
+                withEntity: RELATIONSHIP_TYPE.WITH_COMPANY,
+                responseData: ownedCompany
+              };
+              dispatchLib.resources.fetchRelationshipForResource(component.props.flux, ownedCompanyRelationship);
+
+              sharedReferenceComponent = TestUtils.findRenderedComponentWithType(component, SHARED_COMPONENT_NAME);
+            });
+
+            it('shouldn\'t see the Shared reference', function() {
+              expect(sharedReferenceComponent).not.toBeDefined();
+            });
+          });
+sharedReferenceComponent
