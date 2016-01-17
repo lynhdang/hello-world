@@ -103,4 +103,4 @@ describe('Test "Line item shared reference"', function() {
               expect(sharedReferenceComponent).not.toBeDefined();
             });
           });
-sharedReferenceComponent
+});
